@@ -19,4 +19,77 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="zh\container_view.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\fseq.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\fseq_impl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\iterator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\iterator_functors.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\proxy_iterator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\random.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\defines_type.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\enable_if_defined.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\has_size.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_less_cv.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_more_cv.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_range.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_ratio.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_similar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_stronger_qualified.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_weaker_qualified.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\random\generator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\random\multigenerator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\random\thread_safe_random_device.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_bidirectional_range.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="zh\container_view.inl">
+      <Filter>Header Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

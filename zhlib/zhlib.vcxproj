@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -70,6 +70,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
+  <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <UseLldLink>false</UseLldLink>
+  </PropertyGroup>
+  <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <UseLldLink>false</UseLldLink>
+  </PropertyGroup>
+  <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <UseLldLink>false</UseLldLink>
+  </PropertyGroup>
+  <PropertyGroup Label="LLVM" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <UseLldLink>false</UseLldLink>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -133,6 +145,7 @@
     <ClInclude Include="zh\container_view.hpp" />
     <ClInclude Include="zh\fseq.hpp" />
     <ClInclude Include="zh\fseq_impl.hpp" />
+    <ClInclude Include="zh\as_functor.hpp" />
     <ClInclude Include="zh\iterator.hpp" />
     <ClInclude Include="zh\iterator_functors.hpp" />
     <ClInclude Include="zh\proxy_iterator.hpp" />
@@ -145,6 +158,7 @@
     <ClInclude Include="zh\type_traits\enable_if_defined.hpp" />
     <ClInclude Include="zh\type_traits\has_size.hpp" />
     <ClInclude Include="zh\type_traits\is_bidirectional_range.hpp" />
+    <ClInclude Include="zh\type_traits\is_function_like.hpp" />
     <ClInclude Include="zh\type_traits\is_less_cv.hpp" />
     <ClInclude Include="zh\type_traits\is_more_cv.hpp" />
     <ClInclude Include="zh\type_traits\is_range.hpp" />
@@ -152,9 +166,11 @@
     <ClInclude Include="zh\type_traits\is_similar.hpp" />
     <ClInclude Include="zh\type_traits\is_stronger_qualified.hpp" />
     <ClInclude Include="zh\type_traits\is_weaker_qualified.hpp" />
+    <ClInclude Include="zh\type_traits\remove_all_pointers.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="zh\container_view.inl" />
+    <None Include="zh\iterator.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -86,9 +86,21 @@
     <ClInclude Include="zh\type_traits\is_bidirectional_range.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zh\type_traits\remove_all_pointers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\as_functor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_function_like.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="zh\container_view.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="zh\iterator.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

@@ -1,29 +1,29 @@
 #include <vector>
 #include <iostream>
-#include "zh/fseq.hpp"
-#include "zh/proxy_iterator.hpp"
-#include "zh/container_view.hpp"
-#include "zh/as_functor.hpp"
-
-using container = std::vector<int*>;
-using iter = container::iterator;
-
-int& deref(int* ptr) {
-	return *ptr;
-}
+#include "zh/deriveable_ptr.hpp"
 
 int main() {
-	std::cout << std::boolalpha;
-	std::cout << zh::is_function_like_v<void()> << std::endl;
-	std::cout << zh::is_function_like_v<void(&)()> << std::endl;
-	std::cout << zh::is_function_like_v<void(*)()> << std::endl;
-	std::cout << zh::is_function_like_v<void(*&)()> << std::endl;
-	std::cout << zh::is_function_like_v<void(****&)()> << std::endl;
-	std::cout << zh::is_function_like_v<void(*****)()> << std::endl;
+	int x[10] = {0, 1, 2, 3, 4, 5, 6, 7, 9};
+	int* const ptr = x;
+	zh::deriveable_ptr p(ptr);
 
-	container cc;
+	std::cout << p << std::endl;
+	p++;
+	++p;
+	p--;
+	--p;
+	std::cout << *p << std::endl;
+	std::cout << p[5] << std::endl;
 
-	zh::proxy_iterator<iter, zh::as_functor<deref>> p(cc.begin());
+	int* ptr2 = p;
+	std::cout << ptr2 << std::endl;
+	void* ptr3 = p;
+	std::cout << ptr3 << std::endl;
+
+	std::cout << (p + 5) << std::endl;
+	std::cout << (p + 5) - p << std::endl;
+	std::cout << (p + 5) - 3 << std::endl;
+	std::cout << (5 + p) << std::endl;
 
 	std::cin.get();
 }

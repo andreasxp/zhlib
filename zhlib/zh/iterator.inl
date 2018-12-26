@@ -7,7 +7,6 @@
 
 namespace zh {
 
-// Definitions ================================================================
 // advance --------------------------------------------------------------------
 template <class InputIt, class Distance>
 constexpr void advance(InputIt& it, Distance n) {

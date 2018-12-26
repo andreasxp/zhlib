@@ -2,6 +2,7 @@
 #include <iterator>
 #include <memory>
 #include <type_traits>
+#include "deriveable_ptr.hpp"
 #include "type_traits/is_function_like.hpp"
 #include "as_functor.hpp"
 
@@ -9,7 +10,7 @@ namespace zh {
 
 template <class BaseIterator, class FunctorType>
 class proxy_iterator : 
-	public BaseIterator, 
+	public make_deriveable<BaseIterator>,
 	private FunctorType {
 public:
 	// Member types ------------------------------------------------------------

@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zh\container_view.hpp" />
+    <ClInclude Include="zh\deriveable_ptr.hpp" />
     <ClInclude Include="zh\fseq.hpp" />
     <ClInclude Include="zh\fseq_impl.hpp" />
     <ClInclude Include="zh\as_functor.hpp" />

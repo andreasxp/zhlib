@@ -171,7 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="zh\container_view.inl" />
+    <None Include="zh\deriveale_ptr.inl" />
     <None Include="zh\iterator.inl" />
+    <None Include="zh\proxy_iterator.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

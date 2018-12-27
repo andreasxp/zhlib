@@ -15,89 +15,50 @@ private:
 
 public:
 	// Constructors -----------------------------------------------------------
-	deriveable_ptr() noexcept = default;
+	constexpr deriveable_ptr() noexcept = default;
 
 	template <class P, class =
 		std::enable_if_t<std::is_constructible_v<Ptr, P>>>
-		deriveable_ptr(P&& p) noexcept :
-		ptr(p) {
-	}
+	constexpr deriveable_ptr(P&& p) noexcept;
 
-	deriveable_ptr(const deriveable_ptr&) noexcept = default;
-	deriveable_ptr(deriveable_ptr&&) noexcept = default;
+	constexpr deriveable_ptr(const deriveable_ptr&) noexcept = default;
+	constexpr deriveable_ptr(deriveable_ptr&&) noexcept = default;
 
-	deriveable_ptr& operator=(const deriveable_ptr&) noexcept = default;
-	deriveable_ptr& operator=(deriveable_ptr&&) noexcept = default;
+	constexpr deriveable_ptr& operator=(const deriveable_ptr&) noexcept = default;
+	constexpr deriveable_ptr& operator=(deriveable_ptr&&) noexcept = default;
 
 	template <class P, class =
 		std::enable_if_t<std::is_convertible_v<P, Ptr>>>
-		deriveable_ptr& operator=(P&& p) {
-		ptr = p;
-	}
+	constexpr deriveable_ptr& operator=(P&& p);
 
 	template <class P, class =
 		std::enable_if_t<std::is_convertible_v<Ptr, P>>>
-		operator P() const noexcept {
-		return ptr;
-	}
+	constexpr operator P() const noexcept;
+
+	constexpr operator Ptr() const noexcept;
 
 	// Member functions -------------------------------------------------------
-	std::remove_pointer_t<Ptr>& operator*() const noexcept {
-		return *ptr;
-	}
+	constexpr std::remove_pointer_t<Ptr>& operator*() const noexcept;
+	constexpr Ptr& operator->() const noexcept;
 
-	Ptr& operator->() const noexcept {
-		return ptr;
-	}
+	constexpr std::remove_pointer_t<Ptr>& operator[](std::ptrdiff_t idx) const noexcept;
 
-	deriveable_ptr& operator++() noexcept {
-		++ptr;
-		return *this;
-	}
+	constexpr deriveable_ptr& operator++() noexcept;
+	constexpr deriveable_ptr operator++(int) noexcept;
 
-	deriveable_ptr operator++(int) noexcept {
-		deriveable_ptr tmp(*this);
-		operator++();
-		return tmp;
-	}
+	constexpr deriveable_ptr& operator--() noexcept;
+	constexpr deriveable_ptr operator--(int) noexcept;
 
-	deriveable_ptr& operator--() noexcept {
-		--ptr;
-		return *this;
-	}
+	constexpr deriveable_ptr& operator+=(std::ptrdiff_t offset) noexcept;
+	constexpr deriveable_ptr& operator-=(std::ptrdiff_t offset) noexcept;
 
-	deriveable_ptr operator--(int) noexcept {
-		deriveable_ptr tmp(*this);
-		operator--();
-		return tmp;
-	}
+	template <class Ptr_> friend std::ostream& operator<<(std::ostream& os, deriveable_ptr<Ptr_> obj);
+	template <class Ptr_> friend std::istream& operator>>(std::istream& is, deriveable_ptr<Ptr_> obj);
 
-	deriveable_ptr& operator+=(std::ptrdiff_t offset) noexcept {
-		ptr += offset;
-		return *this;
-	}
+	template <class Ptr_> friend constexpr bool operator==(deriveable_ptr<Ptr_> lhs, deriveable_ptr<Ptr_> rhs);
+	template <class Ptr_> friend constexpr bool operator< (deriveable_ptr<Ptr_> lhs, deriveable_ptr<Ptr_> rhs);
 
-	deriveable_ptr& operator-=(std::ptrdiff_t offset) noexcept {
-		ptr -= offset;
-		return *this;
-	}
-
-	std::remove_pointer_t<Ptr>& operator[](std::ptrdiff_t idx) const noexcept {
-		return ptr[idx];
-	}
-
-	template <class Ptr_>
-	friend inline std::ptrdiff_t operator-(deriveable_ptr<Ptr_> lhs, deriveable_ptr<Ptr_> rhs);
-
-	template <class Ptr_>
-	friend inline bool operator==(deriveable_ptr<Ptr_> lhs, deriveable_ptr<Ptr_> rhs);
-	template <class Ptr_>
-	friend inline bool operator< (deriveable_ptr<Ptr_> lhs, deriveable_ptr<Ptr_> rhs);
-
-	template <class Ptr_>
-	friend std::ostream& operator<<(std::ostream& os, deriveable_ptr<Ptr_> obj);
-	template <class Ptr_>
-	friend std::istream& operator>>(std::istream& is, deriveable_ptr<Ptr_> obj);
+	template <class Ptr_> friend constexpr std::ptrdiff_t operator-(deriveable_ptr<Ptr_> lhs, deriveable_ptr<Ptr_> rhs);
 };
 
 template <class Ptr, class = std::enable_if_t<std::is_pointer_v<Ptr>>>
@@ -110,45 +71,20 @@ using make_deriveable = std::conditional_t<
 	Iterator
 >;
 
-template <class Ptr>
-std::ostream& operator<<(std::ostream& os, deriveable_ptr<Ptr> obj) {
-	return os << obj.ptr;
-}
+template <class Ptr> std::ostream& operator<<(std::ostream& os, deriveable_ptr<Ptr> obj);
+template <class Ptr> std::istream& operator>>(std::istream& is, deriveable_ptr<Ptr> obj);
 
-template <class Ptr>
-std::istream& operator>>(std::istream& is, deriveable_ptr<Ptr> obj) {
-	return is << obj.ptr;
-}
+template <class Ptr> constexpr bool operator==(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs);
+template <class Ptr> constexpr bool operator!=(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs);
+template <class Ptr> constexpr bool operator< (deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs);
+template <class Ptr> constexpr bool operator> (deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs);
+template <class Ptr> constexpr bool operator<=(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs);
+template <class Ptr> constexpr bool operator>=(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs);
 
-template <class Ptr> inline bool operator==(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs) { return lhs.ptr == rhs.ptr; }
-template <class Ptr> inline bool operator!=(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs) { return !operator==(lhs, rhs); }
-template <class Ptr> inline bool operator< (deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs) { return lhs.ptr < rhs.ptr; }
-template <class Ptr> inline bool operator> (deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs) { return  operator< (rhs, lhs); }
-template <class Ptr> inline bool operator<=(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs) { return !operator> (lhs, rhs); }
-template <class Ptr> inline bool operator>=(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs) { return !operator< (lhs, rhs); }
-
-template <class Ptr>
-inline deriveable_ptr<Ptr> operator+(deriveable_ptr<Ptr> lhs, std::ptrdiff_t offset) {
-	lhs += offset;
-	return lhs;
-}
-
-template <class Ptr>
-inline deriveable_ptr<Ptr> operator+(std::ptrdiff_t offset, deriveable_ptr<Ptr> lhs) {
-	lhs += offset;
-	return lhs;
-}
-
-template <class Ptr>
-inline deriveable_ptr<Ptr> operator-(deriveable_ptr<Ptr> lhs, std::ptrdiff_t offset) {
-	lhs -= offset;
-	return lhs;
-}
-
-template <class Ptr>
-inline std::ptrdiff_t operator-(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs) {
-	return lhs.ptr - rhs.ptr;
-}
+template <class Ptr> constexpr deriveable_ptr<Ptr> operator+(deriveable_ptr<Ptr> lhs, std::ptrdiff_t offset);
+template <class Ptr> constexpr deriveable_ptr<Ptr> operator+(std::ptrdiff_t offset,   deriveable_ptr<Ptr> lhs);
+template <class Ptr> constexpr deriveable_ptr<Ptr> operator-(deriveable_ptr<Ptr> lhs, std::ptrdiff_t offset);
+template <class Ptr> constexpr std::ptrdiff_t      operator-(deriveable_ptr<Ptr> lhs, deriveable_ptr<Ptr> rhs);
 
 } // namespace zh
 
@@ -160,3 +96,5 @@ struct iterator_traits<zh::deriveable_ptr<Ptr>>
 };
 
 }
+
+#include "deriveale_ptr.inl"

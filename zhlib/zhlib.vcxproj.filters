@@ -106,5 +106,11 @@
     <None Include="zh\iterator.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="zh\deriveale_ptr.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="zh\proxy_iterator.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #pragma once
-#include "type_traits.hpp"
+#include "type_traits/is_function_like.hpp"
 
 namespace zh {
 
@@ -18,7 +18,7 @@ struct as_functor_impl {
 } // namespace detail
 
 template <class Function, class = 
-	std::enable_if_t<std::is_function_v<remove_all_pointers_t<Function>>>>
+	std::enable_if_t<is_function_like_v<Function>>>
 constexpr decltype(auto) to_function_ref(Function* func) {
 	auto& temp = *func;
 	if constexpr (std::is_pointer_v<std::remove_reference_t<decltype(temp)>>) {

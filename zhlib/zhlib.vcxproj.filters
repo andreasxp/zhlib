@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="zh\container_view.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="zh\fseq.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -98,11 +95,17 @@
     <ClInclude Include="zh\deriveable_ptr.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zh\container_view_reverse.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\container_view_no_reverse.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\container_view.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="zh\container_view.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="zh\iterator.inl">
       <Filter>Header Files</Filter>
     </None>
@@ -110,6 +113,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="zh\proxy_iterator.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="zh\container_view_reverse.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="zh\container_view_no_reverse.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

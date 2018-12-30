@@ -143,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zh\container_view.hpp" />
+    <ClInclude Include="zh\container_view_no_reverse.hpp" />
+    <ClInclude Include="zh\container_view_reverse.hpp" />
     <ClInclude Include="zh\deriveable_ptr.hpp" />
     <ClInclude Include="zh\fseq.hpp" />
     <ClInclude Include="zh\fseq_impl.hpp" />
@@ -170,7 +172,8 @@
     <ClInclude Include="zh\type_traits\remove_all_pointers.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="zh\container_view.inl" />
+    <None Include="zh\container_view_no_reverse.inl" />
+    <None Include="zh\container_view_reverse.inl" />
     <None Include="zh\deriveale_ptr.inl" />
     <None Include="zh\iterator.inl" />
     <None Include="zh\proxy_iterator.inl" />

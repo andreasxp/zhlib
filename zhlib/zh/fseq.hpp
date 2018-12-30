@@ -18,6 +18,7 @@ public:
 		base(functors...) {
 	}
 
+	using base::size;
 	using base::operator();
 };
 

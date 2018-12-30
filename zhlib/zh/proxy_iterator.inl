@@ -3,32 +3,32 @@
 
 namespace zh {
 
-template <class Iterator, class Functor>
-typename proxy_iterator<Iterator, Functor>::base&
-proxy_iterator<Iterator, Functor>::iterator() noexcept {
+TEMPLATE_PROXY_ITERATOR
+typename PROXY_ITERATOR::base&
+PROXY_ITERATOR::iterator() noexcept {
 	return static_cast<base&>(*this);
 }
 
-template <class Iterator, class Functor>
-const typename proxy_iterator<Iterator, Functor>::base&
-proxy_iterator<Iterator, Functor>::iterator() const noexcept {
+TEMPLATE_PROXY_ITERATOR
+const typename PROXY_ITERATOR::base&
+PROXY_ITERATOR::iterator() const noexcept {
 	return static_cast<const base&>(*this);
 }
 
-template <class Iterator, class Functor>
-typename proxy_iterator<Iterator, Functor>::functor_type&
-proxy_iterator<Iterator, Functor>::functor() noexcept {
+TEMPLATE_PROXY_ITERATOR
+typename PROXY_ITERATOR::functor_type&
+PROXY_ITERATOR::functor() noexcept {
 	return static_cast<functor_type&>(*this);
 }
 
-template <class Iterator, class Functor>
-const typename proxy_iterator<Iterator, Functor>::functor_type&
-proxy_iterator<Iterator, Functor>::functor() const noexcept {
+TEMPLATE_PROXY_ITERATOR
+const typename PROXY_ITERATOR::functor_type&
+PROXY_ITERATOR::functor() const noexcept {
 	return static_cast<const functor_type&>(*this);
 }
 
-template <class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>::
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR::
 proxy_iterator(const iterator_type& other, const functor_type& functor)
 noexcept(
 	std::is_nothrow_copy_constructible_v<iterator_type> &&
@@ -37,16 +37,16 @@ noexcept(
 	functor_type(functor) {
 }
 
-template <class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>::
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR::
 proxy_iterator(const functor_type& functor)
 noexcept(proxy_iterator(iterator_type(), functor)) :
 	proxy_iterator(iterator_type(), functor) {
 }
 
-template <class Iterator, class Functor>
+TEMPLATE_PROXY_ITERATOR
 template <class Iter, class>
-constexpr proxy_iterator<Iterator, Functor>::
+constexpr PROXY_ITERATOR::
 proxy_iterator(const proxy_iterator<Iter, functor_type>& other)
 noexcept(
 	std::is_nothrow_constructible_v<iterator_type, const Iter&> &&
@@ -54,137 +54,143 @@ noexcept(
 	iterator_type(other.iterator()) {
 }
 
-template<class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>::operator iterator_type() const noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR::operator iterator_type() const noexcept {
 	return iterator();
 }
 
-template<class Iterator, class Functor>
-constexpr typename proxy_iterator<Iterator, Functor>::iterator_type
-proxy_iterator<Iterator, Functor>::get_iterator() const noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr typename PROXY_ITERATOR::iterator_type
+PROXY_ITERATOR::get_iterator() const noexcept {
 	return iterator();
 }
 
-template<class Iterator, class Functor>
-constexpr typename proxy_iterator<Iterator, Functor>::functor_type
-proxy_iterator<Iterator, Functor>::get_functor() const noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr typename PROXY_ITERATOR::functor_type
+PROXY_ITERATOR::get_functor() const noexcept {
 	return functor();
 }
 
-template <class Iterator, class Functor>
-constexpr decltype(auto) proxy_iterator<Iterator, Functor>::operator->() const
+TEMPLATE_PROXY_ITERATOR
+constexpr decltype(auto) PROXY_ITERATOR::operator->() const
 noexcept(std::addressof(functor()(*iterator()))) {
 	return std::addressof(functor()(*iterator()));
 }
 
-template <class Iterator, class Functor>
-constexpr decltype(auto) proxy_iterator<Iterator, Functor>::operator*() const
+TEMPLATE_PROXY_ITERATOR
+constexpr decltype(auto) PROXY_ITERATOR::operator*() const
 noexcept(functor()(*iterator())) {
 	return functor()(*iterator());
 }
 
-template<class Iterator, class Functor>
+TEMPLATE_PROXY_ITERATOR
 constexpr decltype(auto)
-proxy_iterator<Iterator, Functor>::operator[](difference_type idx) const noexcept {
+PROXY_ITERATOR::operator[](difference_type idx) const noexcept {
 	return iterator()[idx];
 }
 
-template<class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>&
-proxy_iterator<Iterator, Functor>::operator++() noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR&
+PROXY_ITERATOR::operator++() noexcept {
 	++iterator();
 	return *this;
 }
 
-template<class Iterator, class Functor>
-inline constexpr proxy_iterator<Iterator, Functor>
-proxy_iterator<Iterator, Functor>::operator++(int) noexcept {
+TEMPLATE_PROXY_ITERATOR
+inline constexpr PROXY_ITERATOR
+PROXY_ITERATOR::operator++(int) noexcept {
 	proxy_iterator tmp(*this);
 	operator++();
 	return tmp;
 }
 
-template<class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>&
-proxy_iterator<Iterator, Functor>::operator--() noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR&
+PROXY_ITERATOR::operator--() noexcept {
 	--iterator();
 	return *this;
 }
 
-template<class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>
-proxy_iterator<Iterator, Functor>::operator--(int) noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR
+PROXY_ITERATOR::operator--(int) noexcept {
 	proxy_iterator tmp(*this);
 	operator--();
 	return tmp;
 }
 
-template<class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>&
-proxy_iterator<Iterator, Functor>::operator+=(difference_type offset) noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR&
+PROXY_ITERATOR::operator+=(difference_type offset) noexcept {
 	iterator() += offset;
 	return *this;
 }
 
-template<class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>&
-proxy_iterator<Iterator, Functor>::operator-=(difference_type offset) noexcept {
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR&
+PROXY_ITERATOR::operator-=(difference_type offset) noexcept {
 	iterator() -= offset;
 	return *this;
 }
 
-template <class Iterator, class Functor>
-constexpr bool operator==(const proxy_iterator<Iterator, Functor>& lhs, const proxy_iterator<Iterator, Functor>& rhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr bool operator==(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs) {
 	return lhs.iterator() == rhs.iterator();
 }
 
-template <class Iterator, class Functor>
-constexpr bool operator!=(const proxy_iterator<Iterator, Functor>& lhs, const proxy_iterator<Iterator, Functor>& rhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr bool operator!=(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs) {
 	return !(lhs == rhs);
 }
 
-template <class Iterator, class Functor>
-constexpr bool operator< (const proxy_iterator<Iterator, Functor>& lhs, const proxy_iterator<Iterator, Functor>& rhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr bool operator< (const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs) {
 	return lhs.iterator() < rhs.iterator();
 }
 
-template <class Iterator, class Functor>
-constexpr bool operator> (const proxy_iterator<Iterator, Functor>& lhs, const proxy_iterator<Iterator, Functor>& rhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr bool operator> (const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs) {
 	return rhs < lhs;
 }
 
-template <class Iterator, class Functor>
-constexpr bool operator<=(const proxy_iterator<Iterator, Functor>& lhs, const proxy_iterator<Iterator, Functor>& rhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr bool operator<=(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs) {
 	return !(lhs > rhs);
 }
 
-template <class Iterator, class Functor>
-constexpr bool operator>=(const proxy_iterator<Iterator, Functor>& lhs, const proxy_iterator<Iterator, Functor>& rhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr bool operator>=(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs) {
 	return !(lhs < rhs);
 }
 
-template <class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>
-operator+(const proxy_iterator<Iterator, Functor>& lhs, typename proxy_iterator<Iterator, Functor>::difference_type offset) {
-	return proxy_iterator<Iterator, Functor>(lhs.iterator() + offset, lhs.functor());
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR
+operator+(const PROXY_ITERATOR& lhs, typename PROXY_ITERATOR::difference_type offset) {
+	return PROXY_ITERATOR(lhs.iterator() + offset, lhs.functor());
 }
 
-template <class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>
-operator+(typename proxy_iterator<Iterator, Functor>::difference_type offset, const proxy_iterator<Iterator, Functor>& lhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR
+operator+(typename PROXY_ITERATOR::difference_type offset, const PROXY_ITERATOR& lhs) {
 	return lhs + offset;
 }
 
-template <class Iterator, class Functor>
-constexpr proxy_iterator<Iterator, Functor>
-operator-(const proxy_iterator<Iterator, Functor>& lhs, typename proxy_iterator<Iterator, Functor>::difference_type offset) {
-	return proxy_iterator<Iterator, Functor>(lhs.iterator() - offset, lhs.functor());
+TEMPLATE_PROXY_ITERATOR
+constexpr PROXY_ITERATOR
+operator-(const PROXY_ITERATOR& lhs, typename PROXY_ITERATOR::difference_type offset) {
+	return PROXY_ITERATOR(lhs.iterator() - offset, lhs.functor());
 }
 
-template <class Iterator, class Functor>
-constexpr typename proxy_iterator<Iterator, Functor>::difference_type
-operator-(const proxy_iterator<Iterator, Functor>& lhs, const proxy_iterator<Iterator, Functor>& rhs) {
+TEMPLATE_PROXY_ITERATOR
+constexpr typename PROXY_ITERATOR::difference_type
+operator-(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs) {
 	return lhs.iterator() - rhs.iterator();
 }
 
 } // namespace zh
+
+#undef TEMPLATE_PROXY_ITERATOR
+#undef TEMPLATE_PROXY_ITERATOR_
+#undef PROXY_ITERATOR
+#undef PROXY_ITERATOR_
+// Defined in proxy_iterator.hpp

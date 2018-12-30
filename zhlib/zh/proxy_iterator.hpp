@@ -4,20 +4,39 @@
 #include <type_traits>
 #include "deriveable_ptr.hpp"
 #include "type_traits/is_function_like.hpp"
+#include "fseq.hpp"
 #include "as_functor.hpp"
+
+// For convenience
+#define TEMPLATE_PROXY_ITERATOR  template <class Iterator,  class Functor,  class... Functors>
+#define TEMPLATE_PROXY_ITERATOR_ template <class Iterator_, class Functor_, class... Functors_>
+#define PROXY_ITERATOR  proxy_iterator<Iterator,  Functor,  Functors...>
+#define PROXY_ITERATOR_ proxy_iterator<Iterator_, Functor_, Functors_...>
+// Undefined in proxy_iterator.inl
 
 namespace zh {
 
-template <class Iterator, class Functor>
+TEMPLATE_PROXY_ITERATOR
 class proxy_iterator : 
+	// If Iterator is a pointer, derives from a wrapper class.
+	// Otherwise, derives straight from Iterator.
 	private make_deriveable<Iterator>,
-	private Functor {
+
+	// Functors... contains additional functors to be applied in sequence.
+	// if no additional functors were passed, derive from Functor.
+	// Otherwise, derive from a functor sequence.
+	private std::conditional_t<sizeof...(Functors) == 0,
+		Functor, fseq<Functor, Functors...>> {
 public:
 	// Member types -----------------------------------------------------------
 
 	// Iterator that was used to instantiate proxy_iterator
 	using iterator_type = Iterator;
-	using functor_type = Functor;
+	using functor_type = std::conditional_t<
+		sizeof...(Functors) == 0,
+		Functor, 
+		fseq<Functor, Functors...>
+	>;
 
 private:
 	// Private types and functions --------------------------------------------
@@ -100,90 +119,51 @@ public:
 	constexpr proxy_iterator& operator-=(difference_type offset) noexcept;
 
 	// Friends ----------------------------------------------------------------
-	template <class Iterator_, class Functor_>
-	friend constexpr bool operator==(
-		const proxy_iterator<Iterator_, Functor_>& lhs, const proxy_iterator<Iterator_, Functor_>& rhs);
-
-	template <class Iterator_, class Functor_>
-	friend constexpr bool operator!=(
-		const proxy_iterator<Iterator_, Functor_>& lhs, const proxy_iterator<Iterator_, Functor_>& rhs);
-
-	template <class Iterator_, class Functor_>
-	friend constexpr bool operator< (
-		const proxy_iterator<Iterator_, Functor_>& lhs, const proxy_iterator<Iterator_, Functor_>& rhs);
-
-	template <class Iterator_, class Functor_>
-	friend constexpr proxy_iterator<Iterator_, Functor_>
-		operator+(
-			const proxy_iterator<Iterator_, Functor_>& lhs, 
-			typename proxy_iterator<Iterator_, Functor_>::difference_type offset);
+	TEMPLATE_PROXY_ITERATOR_ friend constexpr bool operator==(const PROXY_ITERATOR_& lhs, const PROXY_ITERATOR_& rhs);
+	TEMPLATE_PROXY_ITERATOR_ friend constexpr bool operator< (const PROXY_ITERATOR_& lhs, const PROXY_ITERATOR_& rhs);
 	
-	template <class Iterator_, class Functor_>
-	friend constexpr proxy_iterator<Iterator_, Functor_>
-		operator-(
-			const proxy_iterator<Iterator_, Functor_>& lhs, 
-			typename proxy_iterator<Iterator_, Functor_>::difference_type offset);
+	TEMPLATE_PROXY_ITERATOR_
+	friend constexpr PROXY_ITERATOR_ operator+(
+			const PROXY_ITERATOR_& lhs, 
+			typename PROXY_ITERATOR_::difference_type offset);
+	
+	TEMPLATE_PROXY_ITERATOR_
+	friend constexpr PROXY_ITERATOR_ operator-(
+			const PROXY_ITERATOR_& lhs, 
+			typename PROXY_ITERATOR_::difference_type offset);
 
-	template <class Iterator_, class Functor_>
-	friend constexpr typename proxy_iterator<Iterator_, Functor_>::difference_type
-		operator-(
-			const proxy_iterator<Iterator_, Functor_>& lhs, 
-			const proxy_iterator<Iterator_, Functor_>& rhs);
+	TEMPLATE_PROXY_ITERATOR_
+	friend constexpr typename PROXY_ITERATOR_::difference_type operator-(
+			const PROXY_ITERATOR_& lhs, 
+			const PROXY_ITERATOR_& rhs);
 };
 
-template <class Iterator, class Functor> 
-constexpr bool operator==(
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	const proxy_iterator<Iterator, Functor>& rhs);
+TEMPLATE_PROXY_ITERATOR constexpr bool operator==(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs);
+TEMPLATE_PROXY_ITERATOR constexpr bool operator!=(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs);
+TEMPLATE_PROXY_ITERATOR constexpr bool operator< (const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs);
+TEMPLATE_PROXY_ITERATOR constexpr bool operator> (const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs);
+TEMPLATE_PROXY_ITERATOR constexpr bool operator<=(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs);
+TEMPLATE_PROXY_ITERATOR constexpr bool operator>=(const PROXY_ITERATOR& lhs, const PROXY_ITERATOR& rhs);
 
-template <class Iterator, class Functor> 
-constexpr bool operator!=(
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	const proxy_iterator<Iterator, Functor>& rhs);
+TEMPLATE_PROXY_ITERATOR 
+constexpr PROXY_ITERATOR operator+(
+	const PROXY_ITERATOR& lhs, 
+	typename PROXY_ITERATOR::difference_type offset);
 
-template <class Iterator, class Functor> 
-constexpr bool operator< (
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	const proxy_iterator<Iterator, Functor>& rhs);
+TEMPLATE_PROXY_ITERATOR 
+constexpr PROXY_ITERATOR operator+(
+	typename PROXY_ITERATOR::difference_type offset, 
+	const PROXY_ITERATOR& lhs);
 
-template <class Iterator, class Functor> 
-constexpr bool operator> (
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	const proxy_iterator<Iterator, Functor>& rhs);
+TEMPLATE_PROXY_ITERATOR 
+constexpr PROXY_ITERATOR operator-(
+	const PROXY_ITERATOR& lhs, 
+	typename PROXY_ITERATOR::difference_type offset);
 
-template <class Iterator, class Functor> 
-constexpr bool operator<=(
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	const proxy_iterator<Iterator, Functor>& rhs);
-
-template <class Iterator, class Functor> 
-constexpr bool operator>=(
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	const proxy_iterator<Iterator, Functor>& rhs);
-
-template <class Iterator, class Functor> 
-constexpr proxy_iterator<Iterator, Functor> 
-operator+(
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	typename proxy_iterator<Iterator, Functor>::difference_type offset);
-
-template <class Iterator, class Functor> 
-constexpr proxy_iterator<Iterator, Functor> 
-operator+(
-	typename proxy_iterator<Iterator, Functor>::difference_type offset, 
-	const proxy_iterator<Iterator, Functor>& lhs);
-
-template <class Iterator, class Functor> 
-constexpr proxy_iterator<Iterator, Functor> 
-operator-(
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	typename proxy_iterator<Iterator, Functor>::difference_type offset);
-
-template <class Iterator, class Functor> 
-constexpr typename proxy_iterator<Iterator, Functor>::difference_type 
-operator-(
-	const proxy_iterator<Iterator, Functor>& lhs, 
-	const proxy_iterator<Iterator, Functor>& rhs);
+TEMPLATE_PROXY_ITERATOR 
+constexpr typename PROXY_ITERATOR::difference_type operator-(
+	const PROXY_ITERATOR& lhs, 
+	const PROXY_ITERATOR& rhs);
 
 
 } // namespace zh

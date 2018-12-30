@@ -25,26 +25,33 @@ private:
 	using base = fseq_impl<Functors...>;
 
 public:
+	// Constructors -----------------------------------------------------------
+	constexpr fseq_impl() = default;
+
+	template <class UFunctor1, class... UFunctors>
+	explicit constexpr fseq_impl(UFunctor1 functor1, UFunctors... functors) :
+		Functor1(functor1),
+		base(functors...) {
+	}
+
+	// Observers --------------------------------------------------------------
+	static constexpr std::size_t size() {
+		return base::size() + 1;
+	}
+
+	// operator() -------------------------------------------------------------
 	template <class T>
-	decltype(auto) operator()(T&& obj) {
+	constexpr decltype(auto) operator()(T&& obj) {
 		return static_cast<base&>(*this)(
 			static_cast<Functor1&>(*this)(std::forward<T>(obj))
 			);
 	}
 
 	template <class T>
-	decltype(auto) operator()(T&& obj) const {
+	constexpr decltype(auto) operator()(T&& obj) const {
 		return static_cast<const base&>(*this)(
 			static_cast<const Functor1&>(*this)(std::forward<T>(obj))
 			);
-	}
-
-	fseq_impl() = default;
-
-	template <class UFunctor1, class... UFunctors>
-	explicit fseq_impl(UFunctor1 functor1, UFunctors... functors) :
-		Functor1(functor1),
-		base(functors...) {
 	}
 };
 
@@ -58,21 +65,28 @@ public:
 
 template <class Functor>
 struct fseq_impl<Functor, void> : private Functor {
+	// Constructors -----------------------------------------------------------
+	constexpr fseq_impl() = default;
+
+	template <class UFunctor>
+	explicit constexpr fseq_impl(UFunctor functor) :
+		Functor(functor) {
+	}
+
+	// Observers --------------------------------------------------------------
+	static constexpr std::size_t size() {
+		return 1;
+	}
+
+	// operator() -------------------------------------------------------------
 	template <class T>
-	decltype(auto) operator()(T&& obj) {
+	constexpr decltype(auto) operator()(T&& obj) {
 		return static_cast<Functor&>(*this)(std::forward<T>(obj));
 	}
 
 	template <class T>
-	decltype(auto) operator()(T&& obj) const {
+	constexpr decltype(auto) operator()(T&& obj) const {
 		return static_cast<const Functor&>(*this)(std::forward<T>(obj));
-	}
-
-	fseq_impl() = default;
-
-	template <class UFunctor>
-	explicit fseq_impl(UFunctor functor) :
-		Functor(functor) {
 	}
 };
 

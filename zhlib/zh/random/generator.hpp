@@ -4,6 +4,7 @@
 // An adapter for multigenerator with operator()
 template <class T>
 class generator : private multigenerator {
+public:
 	T operator()(
 		const T& min = std::numeric_limits<T>::lowest(), 
 		const T& max = std::numeric_limits<T>::max());

@@ -8,6 +8,8 @@ private:
 	std::random_device rd;
 
 public:
+	thread_safe_random_device() = default;
+
 	thread_safe_random_device(const thread_safe_random_device& other) = delete;
 	thread_safe_random_device(thread_safe_random_device&& other) = delete;
 

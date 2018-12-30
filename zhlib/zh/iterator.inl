@@ -95,9 +95,7 @@ InputIt select_from(InputIt first, InputIt last, Gen&& gen) {
 	return first;
 }
 
-template <class Container, class = std::enable_if_t<
-	zh::is_range_v<Container> &&
-	zh::has_size_v<Container>>>
+template <class Container, class>
 	auto select_from(Container&& cont) {
 	// Auto return type to select const_iterator where needed
 	assert(std::size(std::forward<Container>(cont)) > 0);
@@ -106,9 +104,7 @@ template <class Container, class = std::enable_if_t<
 		generator<std::size_t>()(0, std::size(std::forward<Container>(cont)) - 1));
 }
 
-template <class Container, class Gen, class = std::enable_if_t<
-	zh::is_range_v<Container> &&
-	zh::has_size_v<Container>>>
+template <class Container, class Gen, class>
 	auto select_from(Container&& cont, Gen&& gen) {
 	// Auto return type to select const_iterator where needed
 	assert(std::size(std::forward<Container>(cont)) > 0);

@@ -26,7 +26,7 @@ template <
 	class ConstIterator,
 	class ConstReverseIterator = void>
 	using const_container_view = container_view<
-	Container,
+	Container const,
 	ConstIterator,
 	ConstIterator,
 	ConstReverseIterator,
@@ -51,7 +51,7 @@ template <
 	class Container,
 	class ConstIterator>
 	using const_forward_container_view = container_view<
-	Container,
+	Container const,
 	ConstIterator,
 	ConstIterator,
 	void,

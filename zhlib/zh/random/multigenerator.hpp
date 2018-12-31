@@ -39,11 +39,11 @@ public:
 
 inline thread_safe_random_device multigenerator::rd;
 
-void multigenerator::seed(unsigned int s) {
+inline void multigenerator::seed(unsigned int s) {
 	mt.seed(s);
 }
 
-void multigenerator::seed() {
+inline void multigenerator::seed() {
 	mt.seed(rd());
 }
 

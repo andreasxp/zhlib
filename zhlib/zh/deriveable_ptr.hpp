@@ -39,7 +39,7 @@ public:
 
 	// Member functions -------------------------------------------------------
 	constexpr std::remove_pointer_t<Ptr>& operator*() const noexcept;
-	constexpr Ptr& operator->() const noexcept;
+	constexpr Ptr operator->() const noexcept;
 
 	constexpr std::remove_pointer_t<Ptr>& operator[](std::ptrdiff_t idx) const noexcept;
 

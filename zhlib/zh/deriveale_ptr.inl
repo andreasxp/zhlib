@@ -33,7 +33,7 @@ deriveable_ptr<Ptr>::operator*() const noexcept {
 }
 
 template <class Ptr>
-constexpr Ptr& 
+constexpr Ptr 
 deriveable_ptr<Ptr>::operator->() const noexcept {
 	return ptr;
 }

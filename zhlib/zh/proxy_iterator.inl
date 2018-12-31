@@ -55,11 +55,6 @@ noexcept(
 }
 
 TEMPLATE_PROXY_ITERATOR
-constexpr PROXY_ITERATOR::operator iterator_type() const noexcept {
-	return iterator();
-}
-
-TEMPLATE_PROXY_ITERATOR
 constexpr typename PROXY_ITERATOR::iterator_type
 PROXY_ITERATOR::get_iterator() const noexcept {
 	return iterator();
@@ -73,13 +68,13 @@ PROXY_ITERATOR::get_functor() const noexcept {
 
 TEMPLATE_PROXY_ITERATOR
 constexpr decltype(auto) PROXY_ITERATOR::operator->() const
-noexcept(std::addressof(functor()(*iterator()))) {
+noexcept(noexcept(std::addressof(functor()(*iterator())))) {
 	return std::addressof(functor()(*iterator()));
 }
 
 TEMPLATE_PROXY_ITERATOR
 constexpr decltype(auto) PROXY_ITERATOR::operator*() const
-noexcept(functor()(*iterator())) {
+noexcept(noexcept(functor()(*iterator()))) {
 	return functor()(*iterator());
 }
 

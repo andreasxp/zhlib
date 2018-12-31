@@ -86,22 +86,20 @@ public:
 			std::is_nothrow_default_constructible_v<functor_type>);
 
 	// Converters -------------------------------------------------------------
+
 	// Unlike private methods that return references, these methods return
 	// copies. Also, while private method iterator() returns base, get_iterator
 	// returns iterator_type, which may or may not be different.
-
-	explicit constexpr operator iterator_type() const noexcept;
-
 	constexpr iterator_type get_iterator() const noexcept;
 	constexpr functor_type get_functor() const noexcept;
 
 	// Member functions -------------------------------------------------------
 
 	constexpr decltype(auto) operator->() const
-		noexcept(std::addressof(functor()(*iterator())));
+		noexcept(noexcept(std::addressof(functor()(*iterator()))));
 
 	constexpr decltype(auto) operator*() const
-		noexcept(functor()(*iterator()));
+		noexcept(noexcept(functor()(*iterator())));
 
 	// Some of the following methods may or may not be present in base iterator.
 	// Since this is a templated class, these methods will fail to compile only

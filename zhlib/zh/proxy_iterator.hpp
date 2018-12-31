@@ -69,11 +69,11 @@ public:
 		const iterator_type& other = iterator_type(),
 		const functor_type& functor = functor_type())
 		noexcept(
-			std::is_nothrow_copy_constructible_v<iterator_type> &&
+			std::is_nothrow_constructible_v<base, const iterator_type&> &&
 			std::is_nothrow_copy_constructible_v<functor_type>);
 
 	explicit constexpr proxy_iterator(const functor_type& functor)
-		noexcept(proxy_iterator(iterator_type(), functor));
+		noexcept(noexcept(proxy_iterator(iterator_type(), functor)));
 
 	// Convert from related proxy iterators
 	// Example: proxy_iterator<iterator, ...> to 
@@ -82,7 +82,7 @@ public:
 		std::enable_if_t<std::is_constructible_v<iterator_type, const Iter&>>>
 	constexpr proxy_iterator(const proxy_iterator<Iter, functor_type>& other)
 		noexcept(
-			std::is_nothrow_constructible_v<iterator_type, const Iter&> &&
+			std::is_nothrow_constructible_v<base, const Iter&> &&
 			std::is_nothrow_default_constructible_v<functor_type>);
 
 	// Converters -------------------------------------------------------------

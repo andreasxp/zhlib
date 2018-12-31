@@ -31,16 +31,16 @@ TEMPLATE_PROXY_ITERATOR
 constexpr PROXY_ITERATOR::
 proxy_iterator(const iterator_type& other, const functor_type& functor)
 noexcept(
-	std::is_nothrow_copy_constructible_v<iterator_type> &&
+	std::is_nothrow_constructible_v<base, const iterator_type&> &&
 	std::is_nothrow_copy_constructible_v<functor_type>) :
-	iterator_type(other),
+	base(other),
 	functor_type(functor) {
 }
 
 TEMPLATE_PROXY_ITERATOR
 constexpr PROXY_ITERATOR::
 proxy_iterator(const functor_type& functor)
-noexcept(proxy_iterator(iterator_type(), functor)) :
+noexcept(noexcept(proxy_iterator(iterator_type(), functor))) :
 	proxy_iterator(iterator_type(), functor) {
 }
 
@@ -49,9 +49,9 @@ template <class Iter, class>
 constexpr PROXY_ITERATOR::
 proxy_iterator(const proxy_iterator<Iter, functor_type>& other)
 noexcept(
-	std::is_nothrow_constructible_v<iterator_type, const Iter&> &&
+	std::is_nothrow_constructible_v<base, const Iter&> &&
 	std::is_nothrow_default_constructible_v<functor_type>) :
-	iterator_type(other.iterator()) {
+	base(other.iterator()) {
 }
 
 TEMPLATE_PROXY_ITERATOR

@@ -34,6 +34,11 @@ int main() {
 	int x = 5;
 	int* xp = &x;
 
+	zh::proxy::remove_const unconst;
+
+	const int& cr = x;
+	int& r = unconst(cr);
+
 	container v_ = {xp, xp, xp, xp, xp};
 	cview v (v_, 2);
 

@@ -126,28 +126,28 @@ CONTAINER_VIEW::front() const {
 }
 
 TEMPLATE_CONTAINER_VIEW
-template <class>
+template <class, class>
 constexpr typename CONTAINER_VIEW::reference
 CONTAINER_VIEW::back() {
 	return *std::prev(end());
 }
 
 TEMPLATE_CONTAINER_VIEW
-template <class>
+template <class, class>
 constexpr typename CONTAINER_VIEW::const_reference
 CONTAINER_VIEW::back() const {
 	return *std::prev(cend());
 }
 
 TEMPLATE_CONTAINER_VIEW
-template <class>
+template <class, class>
 constexpr typename CONTAINER_VIEW::reference
 CONTAINER_VIEW::operator[](std::size_t index) {
 	return *(begin() + index);
 }
 
 TEMPLATE_CONTAINER_VIEW
-template <class>
+template <class, class>
 constexpr typename CONTAINER_VIEW::const_reference
 CONTAINER_VIEW::operator[](std::size_t index) const {
 	return *(cbegin() + index);

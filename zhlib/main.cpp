@@ -18,7 +18,7 @@ struct deref_add {
 };
 
 using container = std::vector<int*>;
-using iter =  typename container::iterator;
+using iter  = typename container::iterator;
 using citer = typename container::const_iterator;
 using piter  = zh::proxy_iterator<iter,  deref_add>;
 using pciter = zh::proxy_iterator<citer, deref_add>;
@@ -27,7 +27,7 @@ using cview = zh::forward_container_view<
 	container,
 	piter,
 	pciter,
-	int
+	deref_add
 >;
 
 int main() {

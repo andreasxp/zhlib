@@ -82,16 +82,20 @@ public:
 
 	constexpr const_reference front() const;
 
-	template <class = std::enable_if_t<is_bidirectional_v<Iterator>>>
+	template <class Dummy = int, class = std::enable_if_t<sizeof(Dummy) != 0 && 
+		is_bidirectional_v<Iterator>>>
 	constexpr reference back();
 
-	template <class = std::enable_if_t<is_bidirectional_v<ConstIterator>>>
+	template <class Dummy = int, class = std::enable_if_t<sizeof(Dummy) != 0 && 
+		is_bidirectional_v<ConstIterator>>>
 	constexpr const_reference back() const;
 
-	template <class = std::enable_if_t<is_random_access_v<Iterator>>>
+	template <class Dummy = int, class = std::enable_if_t<sizeof(Dummy) != 0 && 
+		is_random_access_v<Iterator>>>
 	constexpr reference operator[](std::size_t index);
 
-	template <class = std::enable_if_t<is_random_access_v<ConstIterator>>>
+	template <class Dummy = int, class = std::enable_if_t<sizeof(Dummy) != 0 && 
+		is_random_access_v<ConstIterator>>>
 	constexpr const_reference operator[](std::size_t index) const;
 };
 

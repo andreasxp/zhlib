@@ -66,13 +66,13 @@ CONTAINER_VIEW::crend() const noexcept {
 }
 
 TEMPLATE_CONTAINER_VIEW
-constexpr typename CONTAINER_VIEW::base::reference
+constexpr typename CONTAINER_VIEW::reference
 CONTAINER_VIEW::back() {
 	return *rbegin();
 }
 
 TEMPLATE_CONTAINER_VIEW
-constexpr typename CONTAINER_VIEW::base::const_reference
+constexpr typename CONTAINER_VIEW::const_reference
 CONTAINER_VIEW::back() const {
 	return *crbegin();
 }

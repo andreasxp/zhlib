@@ -68,13 +68,17 @@ PROXY_ITERATOR::get_functor() const noexcept {
 
 TEMPLATE_PROXY_ITERATOR
 constexpr decltype(auto) PROXY_ITERATOR::operator->() const
-noexcept(noexcept(std::addressof(functor()(*iterator())))) {
+	noexcept(noexcept(std::addressof(
+			std::declval<PROXY_ITERATOR const>().functor()(*
+			std::declval<PROXY_ITERATOR const>().iterator())))) {
 	return std::addressof(functor()(*iterator()));
 }
 
 TEMPLATE_PROXY_ITERATOR
 constexpr decltype(auto) PROXY_ITERATOR::operator*() const
-noexcept(noexcept(functor()(*iterator()))) {
+	noexcept(noexcept(
+			std::declval<PROXY_ITERATOR const>().functor()(*
+			std::declval<PROXY_ITERATOR const>().iterator()))) {
 	return functor()(*iterator());
 }
 

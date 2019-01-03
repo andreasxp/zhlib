@@ -95,11 +95,21 @@ public:
 
 	// Member functions -------------------------------------------------------
 
+	// The noexcept spec in the following two functions is equivalent to
+	// noexcept(noexcept(std::addressof(functor()(*iterator()))))
+	// The added boilerplate std::declval<PROXY_ITERATOR const>() is required
+	// to circumvent MSVC bug that reports ambiguous call to overloaded
+	// functions functor() and iterator().
+
 	constexpr decltype(auto) operator->() const
-		noexcept(noexcept(std::addressof(functor()(*iterator()))));
+		noexcept(noexcept(std::addressof(
+			std::declval<PROXY_ITERATOR const>().functor()(*
+			std::declval<PROXY_ITERATOR const>().iterator()))));
 
 	constexpr decltype(auto) operator*() const
-		noexcept(noexcept(functor()(*iterator())));
+		noexcept(noexcept(
+			std::declval<PROXY_ITERATOR const>().functor()(*
+			std::declval<PROXY_ITERATOR const>().iterator())));
 
 	// Some of the following methods may or may not be present in base iterator.
 	// Since this is a templated class, these methods will fail to compile only

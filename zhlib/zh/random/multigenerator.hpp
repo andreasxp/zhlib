@@ -10,7 +10,7 @@
 // restrictions. Can be seeded, seeded automatically by a random_device.
 class multigenerator {
 private:
-	static thread_safe_random_device rd;
+	inline static thread_safe_random_device rd;
 	
 	std::conditional_t<sizeof(std::size_t) == 8,
 		std::mt19937_64,
@@ -36,8 +36,6 @@ public:
 	template <class T>
 	T get(T min, T max);
 };
-
-inline thread_safe_random_device multigenerator::rd;
 
 inline void multigenerator::seed(unsigned int s) {
 	mt.seed(s);

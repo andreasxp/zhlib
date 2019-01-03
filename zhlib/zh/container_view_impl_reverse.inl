@@ -1,5 +1,6 @@
 #pragma once
-#include "container_view_reverse.hpp"
+#include "container_view_impl_reverse.hpp"
+#include "make_from_first_and_tuple.hpp"
 
 #define TEMPLATE_CONTAINER_VIEW \
 template < \
@@ -7,52 +8,61 @@ template < \
 	class Iterator, \
 	class ConstIterator, \
 	class ReverseIterator, \
-	class ConstReverseIterator>
+	class ConstReverseIterator, \
+	class... Args>
 #define CONTAINER_VIEW \
-container_view< \
+container_view_impl< \
 	Container, \
 	Iterator, \
 	ConstIterator, \
 	ReverseIterator, \
 	ConstReverseIterator, \
-	true>
+	true, \
+	Args...>
 
 namespace zh {
+namespace detail {
 
 TEMPLATE_CONTAINER_VIEW
-constexpr typename CONTAINER_VIEW::reverse_iterator 
+constexpr typename CONTAINER_VIEW::reverse_iterator
 CONTAINER_VIEW::rbegin() noexcept {
-	return reverse_iterator(base::end());
+	return zh::detail::make_from_first_and_tuple<reverse_iterator>(
+		base::end(), base::args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr typename CONTAINER_VIEW::const_reverse_iterator
 CONTAINER_VIEW::rbegin() const noexcept {
-	return const_reverse_iterator(base::cend());
+	return zh::detail::make_from_first_and_tuple<const_reverse_iterator>(
+		base::cend(), base::args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr typename CONTAINER_VIEW::const_reverse_iterator
 CONTAINER_VIEW::crbegin() const noexcept {
-	return const_reverse_iterator(base::cend());
+	return zh::detail::make_from_first_and_tuple<const_reverse_iterator>(
+		base::cend(), base::args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr typename CONTAINER_VIEW::reverse_iterator
 CONTAINER_VIEW::rend() noexcept {
-	return reverse_iterator(base::begin());
+	return zh::detail::make_from_first_and_tuple<reverse_iterator>(
+		base::begin(), base::args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr typename CONTAINER_VIEW::const_reverse_iterator
 CONTAINER_VIEW::rend() const noexcept {
-	return const_reverse_iterator(base::cbegin());
+	return zh::detail::make_from_first_and_tuple<const_reverse_iterator>(
+		base::cbegin(), base::args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr typename CONTAINER_VIEW::const_reverse_iterator
 CONTAINER_VIEW::crend() const noexcept {
-	return const_reverse_iterator(base::cbegin());
+	return zh::detail::make_from_first_and_tuple<const_reverse_iterator>(
+		base::cbegin(), base::args());
 }
 
 TEMPLATE_CONTAINER_VIEW
@@ -67,6 +77,7 @@ CONTAINER_VIEW::back() const {
 	return *crbegin();
 }
 
+} // namespace detail
 } // namespace zh
 
 #undef TEMPLATE_CONTAINER_VIEW

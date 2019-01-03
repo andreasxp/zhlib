@@ -143,14 +143,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zh\container_view.hpp" />
-    <ClInclude Include="zh\container_view_no_reverse.hpp" />
-    <ClInclude Include="zh\container_view_reverse.hpp" />
+    <ClInclude Include="zh\container_view_impl.hpp" />
+    <ClInclude Include="zh\container_view_impl_no_reverse.hpp" />
+    <ClInclude Include="zh\container_view_impl_reverse.hpp" />
     <ClInclude Include="zh\deriveable_ptr.hpp" />
     <ClInclude Include="zh\fseq.hpp" />
     <ClInclude Include="zh\fseq_impl.hpp" />
     <ClInclude Include="zh\as_functor.hpp" />
     <ClInclude Include="zh\iterator.hpp" />
     <ClInclude Include="zh\iterator_functors.hpp" />
+    <ClInclude Include="zh\make_from_first_and_tuple.hpp" />
     <ClInclude Include="zh\proxy_iterator.hpp" />
     <ClInclude Include="zh\random.hpp" />
     <ClInclude Include="zh\random\generator.hpp" />
@@ -160,20 +162,26 @@
     <ClInclude Include="zh\type_traits\defines_type.hpp" />
     <ClInclude Include="zh\type_traits\enable_if_defined.hpp" />
     <ClInclude Include="zh\type_traits\has_size.hpp" />
+    <ClInclude Include="zh\type_traits\is_bidirectional.hpp" />
     <ClInclude Include="zh\type_traits\is_bidirectional_range.hpp" />
+    <ClInclude Include="zh\type_traits\is_forward.hpp" />
     <ClInclude Include="zh\type_traits\is_function_like.hpp" />
+    <ClInclude Include="zh\type_traits\is_input.hpp" />
     <ClInclude Include="zh\type_traits\is_less_cv.hpp" />
     <ClInclude Include="zh\type_traits\is_more_cv.hpp" />
+    <ClInclude Include="zh\type_traits\is_output.hpp" />
+    <ClInclude Include="zh\type_traits\is_random_access.hpp" />
     <ClInclude Include="zh\type_traits\is_range.hpp" />
     <ClInclude Include="zh\type_traits\is_ratio.hpp" />
+    <ClInclude Include="zh\type_traits\is_same.hpp" />
     <ClInclude Include="zh\type_traits\is_similar.hpp" />
     <ClInclude Include="zh\type_traits\is_stronger_qualified.hpp" />
     <ClInclude Include="zh\type_traits\is_weaker_qualified.hpp" />
     <ClInclude Include="zh\type_traits\remove_all_pointers.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="zh\container_view_no_reverse.inl" />
-    <None Include="zh\container_view_reverse.inl" />
+    <None Include="zh\container_view_impl_no_reverse.inl" />
+    <None Include="zh\container_view_impl_reverse.inl" />
     <None Include="zh\deriveale_ptr.inl" />
     <None Include="zh\iterator.inl" />
     <None Include="zh\proxy_iterator.inl" />

@@ -95,13 +95,37 @@
     <ClInclude Include="zh\deriveable_ptr.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="zh\container_view_reverse.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zh\container_view_no_reverse.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="zh\container_view.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\container_view_impl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\container_view_impl_no_reverse.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\container_view_impl_reverse.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_same.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_input.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_bidirectional.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_forward.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_output.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\type_traits\is_random_access.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zh\make_from_first_and_tuple.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -115,10 +139,10 @@
     <None Include="zh\proxy_iterator.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="zh\container_view_reverse.inl">
+    <None Include="zh\container_view_impl_no_reverse.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="zh\container_view_no_reverse.inl">
+    <None Include="zh\container_view_impl_reverse.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

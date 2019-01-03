@@ -1,5 +1,6 @@
 #pragma once
-#include "container_view_no_reverse.hpp"
+#include "container_view_impl_no_reverse.hpp"
+#include "make_from_first_and_tuple.hpp"
 
 #define TEMPLATE_CONTAINER_VIEW \
 template < \
@@ -7,51 +8,97 @@ template < \
 	class Iterator, \
 	class ConstIterator, \
 	class ReverseIterator, \
-	class ConstReverseIterator>
+	class ConstReverseIterator, \
+	class... Args>
 #define CONTAINER_VIEW \
-container_view< \
+container_view_impl< \
 	Container, \
 	Iterator, \
 	ConstIterator, \
 	ReverseIterator, \
 	ConstReverseIterator, \
-	false>
+	false, \
+	Args...>
 
 namespace zh {
+namespace detail {
 
 TEMPLATE_CONTAINER_VIEW
-constexpr CONTAINER_VIEW::container_view(Container& container) :
+constexpr typename CONTAINER_VIEW::container_type& 
+CONTAINER_VIEW::base() noexcept {
+	return c;
+}
+
+TEMPLATE_CONTAINER_VIEW
+constexpr const typename CONTAINER_VIEW::container_type& 
+CONTAINER_VIEW::base() const noexcept {
+	return c;
+}
+
+TEMPLATE_CONTAINER_VIEW
+constexpr typename CONTAINER_VIEW::iterator_args&
+CONTAINER_VIEW::args() noexcept {
+	return static_cast<iterator_args&>(*this);
+}
+
+TEMPLATE_CONTAINER_VIEW
+constexpr const typename CONTAINER_VIEW::iterator_args&
+CONTAINER_VIEW::args() const noexcept {
+	return static_cast<const iterator_args&>(*this);
+}
+
+TEMPLATE_CONTAINER_VIEW
+constexpr CONTAINER_VIEW::
+container_view_impl(Container& container) :
+	c(container) {
+}
+
+TEMPLATE_CONTAINER_VIEW
+template<class ...IteratorArgs>
+inline constexpr CONTAINER_VIEW::
+container_view_impl(Container& container, IteratorArgs&&... args) :
+	iterator_args(args...),
 	c(container) {
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr Iterator CONTAINER_VIEW::begin() noexcept {
-	return Iterator(std::begin(c));
+	// Make Iterator from container's begin and any additional arguments passed
+	// in a tuple. If no additional args were specified during container_view
+	// template instantiation, this call is equivalent to
+	// return Iterator(std::begin(c))
+	return zh::detail::make_from_first_and_tuple<Iterator>(
+		std::begin(c), args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr ConstIterator CONTAINER_VIEW::begin() const noexcept {
-	return ConstIterator(std::cbegin(c));
+	return zh::detail::make_from_first_and_tuple<ConstIterator>(
+		std::cbegin(c), args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr ConstIterator CONTAINER_VIEW::cbegin() const noexcept {
-	return ConstIterator(std::cbegin(c));
+	return zh::detail::make_from_first_and_tuple<ConstIterator>(
+		std::cbegin(c), args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr Iterator CONTAINER_VIEW::end() noexcept {
-	return Iterator(std::end(c));
+	return zh::detail::make_from_first_and_tuple<Iterator>(
+		std::end(c), args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr ConstIterator CONTAINER_VIEW::end() const noexcept {
-	return ConstIterator(std::cend(c));
+	return zh::detail::make_from_first_and_tuple<ConstIterator>(
+		std::cend(c), args());
 }
 
 TEMPLATE_CONTAINER_VIEW
 constexpr ConstIterator CONTAINER_VIEW::cend() const noexcept {
-	return ConstIterator(std::cend(c));
+	return zh::detail::make_from_first_and_tuple<ConstIterator>(
+		std::cend(c), args());
 }
 
 TEMPLATE_CONTAINER_VIEW
@@ -106,6 +153,7 @@ CONTAINER_VIEW::operator[](std::size_t index) const {
 	return *(cbegin() + index);
 }
 
+} // namespace detail
 } // namespace zh
 
 #undef TEMPLATE_CONTAINER_VIEW

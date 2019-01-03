@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 #include <iterator>
+#include "container_view_impl.hpp"
 
 namespace zh {
 
@@ -10,56 +11,73 @@ namespace zh {
 // a container through a proxy, such as view an array of pointers as an array
 // of normal elements, complete with the ability to access and modify elements.
 
+// Note: to forward Args..., these typedefs need to explicitly define the bool
+// argument, that should normally always be deduced.
+
 template <
 	class Container,
 	class Iterator,
 	class ConstIterator,
-	class ReverseIterator = void, // If needed, reverse iterators will be defined as std::reverse_iterator
-	class ConstReverseIterator = void,
-	bool use_reverse = std::is_base_of_v<
-		std::bidirectional_iterator_tag,
-		typename std::iterator_traits<Iterator>::iterator_category>>
-class container_view;
+	class ReverseIterator = std::reverse_iterator<Iterator>,
+	class ConstReverseIterator = std::reverse_iterator<ConstIterator>,
+	class... Args>
+using container_view = 
+	detail::container_view_impl<
+		Container, 
+		Iterator, 
+		ConstIterator, 
+		ReverseIterator, 
+		ConstReverseIterator,
+		is_bidirectional_v<Iterator> &&	!is_same_v<ReverseIterator, ConstReverseIterator, void>,
+		Args...
+	>;
 
 template <
 	class Container,
 	class ConstIterator,
-	class ConstReverseIterator = void>
-	using const_container_view = container_view<
-	Container const,
-	ConstIterator,
-	ConstIterator,
-	ConstReverseIterator,
-	ConstReverseIterator
->;
+	class ConstReverseIterator = std::reverse_iterator<ConstIterator>,
+	class... Args>
+using const_container_view = 
+	detail::container_view_impl<
+		Container const,
+		ConstIterator,
+		ConstIterator,
+		ConstReverseIterator,
+		ConstReverseIterator,
+		is_bidirectional_v<ConstIterator> && !is_same_v<ConstReverseIterator, void>,
+		Args...
+	>;
 
 // Explicitly forbid reverse_iterators
 template <
 	class Container,
 	class Iterator,
-	class ConstIterator>
-	using forward_container_view = container_view<
-	Container,
-	Iterator,
-	ConstIterator,
-	void,
-	void,
-	false
->;
+	class ConstIterator,
+	class... Args>
+using forward_container_view = 
+	detail::container_view_impl<
+		Container,
+		Iterator,
+		ConstIterator,
+		void,
+		void,
+		false,
+		Args...
+	>;
 
 template <
 	class Container,
-	class ConstIterator>
-	using const_forward_container_view = container_view<
-	Container const,
-	ConstIterator,
-	ConstIterator,
-	void,
-	void,
-	false
->;
+	class ConstIterator,
+	class... Args>
+using const_forward_container_view = 
+	detail::container_view_impl<
+		Container const,
+		ConstIterator,
+		ConstIterator,
+		void,
+		void,
+		false,
+		Args...
+	>;
 
 } // namespace zh
-
-#include "container_view_reverse.hpp"
-#include "container_view_no_reverse.hpp"

@@ -1,55 +1,47 @@
 #pragma once
-#include "container_view.hpp"
-#include "container_view_no_reverse.hpp"
+#include "container_view_impl.hpp"
+#include "container_view_impl_no_reverse.hpp"
 
 namespace zh {
+namespace detail {
 
-// Specialized container_view with reverse_iterator
-// Derive from container_view without reverse_iterator
+// Specialized container_view_impl with reverse_iterator
+// Derive from container_view_impl without reverse_iterator
 template <
 	class Container,
 	class Iterator,
 	class ConstIterator,
 	class ReverseIterator,
-	class ConstReverseIterator>
-class container_view <
+	class ConstReverseIterator,
+	class... Args>
+class container_view_impl <
 	Container,
 	Iterator,
 	ConstIterator,
 	ReverseIterator,
 	ConstReverseIterator,
-	true> : public container_view<
+	true,
+	Args...> : public container_view_impl<
 		Container,
 		Iterator,
 		ConstIterator,
 		ReverseIterator,
 		ConstReverseIterator,
-		false> {
+		false,
+		Args...> {
 private:
-	using base = container_view<
+	using base = container_view_impl<
 		Container,
 		Iterator,
 		ConstIterator,
 		ReverseIterator,
 		ConstReverseIterator,
-		false>;
+		false,
+		Args...>;
 
 public:
-	// ReverseIterator and ConstReverseIterator are void by default.
-	// If no iterator was specified, they are defined as
-	// std::reverse_iterator<Iterator> and
-	// std::reverse_iterator<ConstIterator>
-	using reverse_iterator       = std::conditional_t<
-		std::is_same_v<ReverseIterator, void>,
-		std::reverse_iterator<Iterator>,
-		ReverseIterator
-	>;
-
-	using const_reverse_iterator = std::conditional_t<
-		std::is_same_v<ConstReverseIterator, void>,
-		std::reverse_iterator<ConstIterator>,
-		ConstReverseIterator
-	>;
+	using reverse_iterator       = ReverseIterator;
+	using const_reverse_iterator = ConstReverseIterator;
 
 	// Member functions =======================================================
 	using base::base;
@@ -76,6 +68,7 @@ public:
 	constexpr typename base::const_reference back() const;
 };
 
+} // namespace detail
 } // namespace zh
 
-#include "container_view_reverse.inl"
+#include "container_view_impl_reverse.inl"

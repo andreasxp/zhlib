@@ -1,34 +1,42 @@
 #pragma once
-#include "container_view.hpp"
+#include <tuple>
+#include "container_view_impl.hpp"
 #include "type_traits/has_size.hpp"
+#include "type_traits/is_bidirectional.hpp"
+#include "type_traits/is_random_access.hpp"
 
 namespace zh {
+namespace detail {
 
-// Specialized container_view with no reverse_iterator
+// Specialized container_view_impl with no reverse_iterators.
 template <
 	class Container,
 	class Iterator,
 	class ConstIterator,
-	class ReverseIterator,
-	class ConstReverseIterator>
-class container_view<
+	class ReverseIterator,      // not used
+	class ConstReverseIterator, // not used
+	class... Args>
+class container_view_impl<
 	Container,
 	Iterator,
 	ConstIterator,
 	ReverseIterator,
 	ConstReverseIterator,
-	false> {
-protected:
+	false,
+	Args...>
+	: std::tuple<Args...> {
+private:
 	Container& c;
-	
-	// Shortcuts --------------------------------------------------------------
-	constexpr static bool has_back = std::is_base_of_v<
-		std::bidirectional_iterator_tag,
-		typename std::iterator_traits<Iterator>::iterator_category>;
 
-	constexpr static bool has_random_access =
-		std::is_base_of_v<std::random_access_iterator_tag,
-		typename std::iterator_traits<Iterator>::iterator_category>;
+protected:
+	using container_type = Container;
+	using iterator_args = std::tuple<Args...>;
+	
+	constexpr container_type& base() noexcept;
+	constexpr const container_type& base() const noexcept;
+
+	constexpr iterator_args& args() noexcept;
+	constexpr const iterator_args& args() const noexcept;
 
 public:
 	// Member types ===========================================================
@@ -44,8 +52,14 @@ public:
 
 	// Member functions =======================================================
 	// Constructors -----------------------------------------------------------
-	constexpr container_view(Container& container);
-	~container_view() = default;
+	constexpr container_view_impl(Container& container);
+
+	// Construct with container and store additional arguments for constructing
+	// iterators in a tuple.
+	template <class... IteratorArgs>
+	constexpr container_view_impl(Container& container, IteratorArgs&&... args);
+
+	~container_view_impl() = default;
 
 	// Iterators --------------------------------------------------------------
 	constexpr Iterator begin() noexcept;
@@ -68,19 +82,20 @@ public:
 
 	constexpr const_reference front() const;
 
-	template <class = std::enable_if_t<has_back>>
+	template <class = std::enable_if_t<is_bidirectional_v<Iterator>>>
 	constexpr reference back();
 
-	template <class = std::enable_if_t<has_back>>
+	template <class = std::enable_if_t<is_bidirectional_v<ConstIterator>>>
 	constexpr const_reference back() const;
 
-	template <class = std::enable_if_t<has_random_access>>
+	template <class = std::enable_if_t<is_random_access_v<Iterator>>>
 	constexpr reference operator[](std::size_t index);
 
-	template <class = std::enable_if_t<has_random_access>>
+	template <class = std::enable_if_t<is_random_access_v<ConstIterator>>>
 	constexpr const_reference operator[](std::size_t index) const;
 };
 
+} // namespace detail
 } // namespace zh
 
-#include "container_view_no_reverse.inl"
+#include "container_view_impl_no_reverse.inl"
